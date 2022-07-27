@@ -469,5 +469,7 @@ Info collected from / checked against:
     http://github.com/Klaus2m5/AVR_emulated_6502_4SBC/blob/master/Manuals/65C02_Emu_speed_calc.pdf
 
 My own tests on real HW, a Teensy 4.1 controlling a W65C02S6TPG-14, were used
-to verify the cycles for many of the opcodes. The other docs disagree on many
+to verify the cycles for most of the opcodes. The other docs disagree on many
 of the timings.
+
+This document is licensed under Creative Commons CC0 1.0 Universal.
