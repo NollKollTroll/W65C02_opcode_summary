@@ -1,0 +1,473 @@
+WDC W65C02 opcode summary, v0.2.1
+------------------------------------------------------------------------------
+ADC                                 addressing syntax        op b cyc NV*BDIZC
+Add memory to accumulator with      imm        ADC #$12      69 2 2c  ++----++
+carry                               zp         ADC $12       65 2 3c  ++----++
+A + M + C -> A, C                   zp,X       ADC $12,X     75 2 4c  ++----++
+                                    abs        ADC $1234     6D 3 4c  ++----++
+                                    abs,X      ADC $1234,X   7D 3 4ac ++----++
+                                    abs,Y      ADC $1234,Y   79 3 4ac ++----++
+                                    (ind zp,X) ADC ($12,X)   61 2 6c  ++----++
+                                    (ind zp),Y ADC ($12),Y   71 2 5ac ++----++
+                                    (ind zp)   ADC ($12)     72 2 5c  ++----++
+------------------------------------------------------------------------------
+AND                                 addressing syntax        op b cyc NV*BDIZC
+And memory with accumulator         imm        AND #$12      29 2  2  +-----+-
+A AND M -> A                        zp         AND $12       25 2  3  +-----+-
+                                    zp,X       AND $12,X     35 2  4  +-----+-
+                                    abs        AND $1234     2D 3  4  +-----+-
+                                    abs,X      AND $1234,X   3D 3  4a +-----+-
+                                    abs,Y      AND $1234,Y   39 3  4a +-----+-
+                                    (ind zp,X) AND ($12,X)   21 2  6  +-----+-
+                                    (ind zp),Y AND ($12),Y   31 2  5a +-----+-
+                                    (ind zp)   AND ($12)     32 2  5  +-----+-
+------------------------------------------------------------------------------
+ASL                                 addressing syntax        op b cyc NV*BDIZC
+Shift left one bit (memory or       acc        ASL A         0A 1 2   +-----++
+accumulator)                        zp         ASL $12       06 2 5   +-----++
+C <- [76543210] <- 0                zp,X       ASL $12,X     16 2 6   +-----++
+                                    abs        ASL $1234     0E 3 6   +-----++
+                                    abs,X      ASL $1234,X   1E 3 6a  +-----++
+------------------------------------------------------------------------------
+BBR                                 addressing syntax        op b cyc NV*BDIZC
+Branch on bit reset                 zp,rel     BBR 0,$12,$34 0F 3 5b  --------
+                                    zp,rel     BBR 1,$12,$34 1F 3 5b  --------
+                                    zp,rel     BBR 2,$12,$34 2F 3 5b  --------
+                                    zp,rel     BBR 3,$12,$34 3F 3 5b  --------
+                                    zp,rel     BBR 4,$12,$34 4F 3 5b  --------
+                                    zp,rel     BBR 5,$12,$34 5F 3 5b  --------
+                                    zp,rel     BBR 6,$12,$34 6F 3 5b  --------
+                                    zp,rel     BBR 7,$12,$34 7F 3 5b  --------
+------------------------------------------------------------------------------
+BBS                                 addressing syntax        op b cyc NV*BDIZC
+Branch on bit set                   zp,rel     BBS 0,$12,$34 8F 3 5b  --------
+                                    zp,rel     BBS 1,$12,$34 9F 3 5b  --------
+                                    zp,rel     BBS 2,$12,$34 AF 3 5b  --------
+                                    zp,rel     BBS 3,$12,$34 BF 3 5b  --------
+                                    zp,rel     BBS 4,$12,$34 CF 3 5b  --------
+                                    zp,rel     BBS 5,$12,$34 DF 3 5b  --------
+                                    zp,rel     BBS 6,$12,$34 EF 3 5b  --------
+                                    zp,rel     BBS 7,$12,$34 FF 3 5b  --------
+------------------------------------------------------------------------------
+BCC                                 addressing syntax        op b cyc NV*BDIZC
+Branch on carry clear               rel        BCC $12       90 2 2b  --------
+Branch if C = 0
+------------------------------------------------------------------------------
+BCS                                 addressing syntax        op b cyc NV*BDIZC
+Branch on carry set                 rel        BCS $12       B0 2 2b  --------
+Branch if C = 1
+------------------------------------------------------------------------------
+BEQ                                 addressing syntax        op b cyc NV*BDIZC
+Branch on equal                     rel        BEQ $12       F0 2 2b  --------
+Branch if Z = 1
+------------------------------------------------------------------------------
+BIT                                 addressing syntax        op b cyc NV*BDIZC
+Test bits in memory with            imm        BIT #$12      89 2 2   ------+-
+accumulator                         zp         BIT $12       24 2 3   76----+-
+Bits 7 and 6 of memory are          zp,X       BIT $12,X     34 2 4   76----+-
+transferred to bit 7 and 6 of SR    abs        BIT $1234     2C 3 4   76----+-
+(N,V), the zero bit is set to the   abs,X      BIT $1234,X   3C 3 4a  76----+-
+result of operand AND accumulator.
+A AND M, M7 -> N, M6 -> V
+------------------------------------------------------------------------------
+BMI                                 addressing syntax        op b cyc NV*BDIZC
+Branch on result minus              rel        BMI $12       30 2 2b  --------
+Branch if N = 1
+------------------------------------------------------------------------------
+BNE                                 addressing syntax        op b cyc NV*BDIZC
+Branch on not equal                 rel        BNE $12       D0 2 2b  --------
+Branch if Z = 0
+------------------------------------------------------------------------------
+BPL                                 addressing syntax        op b cyc NV*BDIZC
+Branch on result plus               rel        BPL $12       10 2 2b  --------
+Branch if N = 0
+------------------------------------------------------------------------------
+BRA                                 addressing syntax        op b cyc NV*BDIZC
+Branch always                       imp        BRA $12       80 2 3   --------
+------------------------------------------------------------------------------
+BRK                                 addressing syntax        op b cyc NV*BDIZC
+Break                               rel        BRK           00 1 7   ---101--
+Interrupt, push PC+2, push SR
+------------------------------------------------------------------------------
+BVC                                 addressing syntax        op b cyc NV*BDIZC
+Branch on overflow clear            rel        BVC $12       50 2 2b  --------
+Branch if V = 0
+------------------------------------------------------------------------------
+BVS                                 addressing syntax        op b cyc NV*BDIZC
+Branch on overflow set              rel        BVS $12       70 2 2b  --------
+Branch if V = 1
+------------------------------------------------------------------------------
+CLC                                 addressing syntax        op b cyc NV*BDIZC
+Clear carry flag                    imp        CLC           18 1 2   -------0
+0 -> C
+------------------------------------------------------------------------------
+CLD                                 addressing syntax        op b cyc NV*BDIZC
+Clear decimal mode                  imp        CLD           D8 1 2   ----0---
+0 -> D
+------------------------------------------------------------------------------
+CLI                                 addressing syntax        op b cyc NV*BDIZC
+Clear interrupt disable flag        imp        CLI           58 1 2   -----0--
+0 -> I
+------------------------------------------------------------------------------
+CLV                                 addressing syntax        op b cyc NV*BDIZC
+Clear overflow flag                 imp        CLV           B8 1 2   -0------
+0 -> V
+------------------------------------------------------------------------------
+CMP                                 addressing syntax        op b cyc NV*BDIZC
+Compare memory with accumulator     imm        CMP #$12      C9 2 2   +-----++
+A - M                               zp         CMP $12       C5 2 3   +-----++
+                                    zp,X       CMP $12,X     D5 2 4   +-----++
+                                    abs        CMP $1234     CD 3 4   +-----++
+                                    abs,X      CMP $1234,X   DD 3 4a  +-----++
+                                    abs,Y      CMP $1234,Y   D9 3 4a  +-----++
+                                    (ind zp,X) CMP ($12,X)   C1 2 6   +-----++
+                                    (ind zp),Y CMP ($12),Y   D1 2 5a  +-----++
+                                    (ind zp)   CMP ($12)     D2 2 5   +-----++
+------------------------------------------------------------------------------
+CPX                                 addressing syntax        op b cyc NV*BDIZC
+Compare memory with index X         imm        CPX #$12      E0 2 2   +-----++
+X - M                               zp         CPX $12       E4 2 3   +-----++
+                                    abs        CPX $1234     EC 3 4   +-----++
+------------------------------------------------------------------------------
+CPY                                 addressing syntax        op b cyc NV*BDIZC
+Compare memory with index Y         imm        CPY #$12      C0 2 2   +-----++
+Y - M                               zp         CPY $12       C4 2 3   +-----++
+                                    abs        CPY $1234     CC 3 4   +-----++
+------------------------------------------------------------------------------
+DEC                                 addressing syntax        op b cyc NV*BDIZC
+Decrement accumulator or memory     imp        DEC A         3A 1 2   +-----+-
+by one                              zp         DEC $12       C6 2 5   +-----+-
+M - 1 -> M                          zp,X       DEC $12,X     D6 2 6   +-----+-
+                                    abs        DEC $1234     CE 3 6   +-----+-
+                                    abs,X      DEC $1234,X   DE 3 7   +-----+-
+
+------------------------------------------------------------------------------
+DEX                                 addressing syntax        op b cyc NV*BDIZC
+Decrement index X by one            imp        DEX           CA 1 2   +-----+-
+X - 1 -> X
+------------------------------------------------------------------------------
+DEY                                 addressing syntax        op b cyc NV*BDIZC
+Decrement index Y by one            imp        DEY           88 1 2   +-----+-
+Y - 1 -> Y
+------------------------------------------------------------------------------
+EOR                                 addressing syntax        op b cyc NV*BDIZC
+Exclusive-OR memory with            imm        EOR #$12      49 2 2   +-----+-
+accumulator                         zp         EOR $12       45 2 3   +-----+-
+A EOR M -> A                        zp,X       EOR $12,X     55 2 4   +-----+-
+                                    abs        EOR $1234     4D 3 4   +-----+-
+                                    abs,X      EOR $1234,X   5D 3 4a  +-----+-
+                                    abs,Y      EOR $1234,Y   59 3 4a  +-----+-
+                                    (ind zp,X) EOR ($12,X)   41 2 6   +-----+-
+                                    (ind zp),Y EOR ($12),Y   51 2 5a  +-----+-
+                                    (ind zp)   EOR ($12)     52 2 5   +-----+-
+------------------------------------------------------------------------------
+INC                                 addressing syntax        op b cyc NV*BDIZC
+Increment accumulator or memory     imp        INC A         1A 1 2   +-----+-
+by one                              zp         INC $12       E6 2 5   +-----+-
+M + 1 -> M                          zp,X       INC $12,X     F6 2 6   +-----+-
+                                    abs        INC $1234     EE 3 6   +-----+-
+                                    abs,X      INC $1234,X   FE 3 7   +-----+-
+------------------------------------------------------------------------------
+INX                                 addressing syntax        op b cyc NV*BDIZC
+Increment index X by one            imp        INX           E8 1 2   +-----+-
+X + 1 -> X
+------------------------------------------------------------------------------
+INY                                 addressing syntax        op b cyc NV*BDIZC
+Increment index Y by one            imp        INY           C8 1 2   +-----+-
+Y + 1 -> Y
+------------------------------------------------------------------------------
+JMP                                 addressing syntax        op b cyc NV*BDIZC
+Jump to new location                abs        JMP $1234     4C 3 3   --------
+(PC+1) -> PCL                       ind        JMP ($1234)   6C 3 5   --------
+(PC+2) -> PCH                       (abs, X)   JMP ($1234,X) 7C 3 6   --------
+------------------------------------------------------------------------------
+JSR                                 addressing syntax        op b cyc NV*BDIZC
+Jump to new location, saving        abs        JSR $1234     20 3 6   --------
+return address
+Push (PC+2)
+(PC+1) -> PCL
+(PC+2) -> PCH
+------------------------------------------------------------------------------
+LDA                                 addressing syntax        op b cyc NV*BDIZC
+Load accumulator with memory        imm        LDA #$12      A9 2 2   +-----+-
+M -> A                              zp         LDA $12       A5 2 3   +-----+-
+                                    zp,X       LDA $12,X     B5 2 4   +-----+-
+                                    abs        LDA $1234     AD 3 4   +-----+-
+                                    abs,X      LDA $1234,X   BD 3 4a  +-----+-
+                                    abs,Y      LDA $1234,Y   B9 3 4a  +-----+-
+                                    (ind zp,X) LDA ($12,X)   A1 2 6   +-----+-
+                                    (ind zp),Y LDA ($12),Y   B1 2 5a  +-----+-
+                                    (ind zp)   LDA ($12)     B2 2 5   +-----+-
+------------------------------------------------------------------------------
+LDX                                 addressing syntax        op b cyc NV*BDIZC
+Load index X with memory            imm        LDX #$12      A2 2 2   +-----+-
+M -> X                              zp         LDX $12       A6 2 3   +-----+-
+                                    zp,Y       LDX $12,Y     B6 2 4   +-----+-
+                                    abs        LDX $1234     AE 3 4   +-----+-
+                                    abs,Y      LDX $1234,Y   BE 3 4a  +-----+-
+------------------------------------------------------------------------------
+LDY                                 addressing syntax        op b cyc NV*BDIZC
+Load index Y with memory            imm        LDY #$12      A0 2 2   +-----+-
+M -> Y                              zp         LDY $12       A4 2 3   +-----+-
+                                    zp,X       LDY $12,X     B4 2 4   +-----+-
+                                    abs        LDY $1234     AC 3 4   +-----+-
+                                    abs,X      LDY $1234,X   BC 3 4a  +-----+-
+------------------------------------------------------------------------------
+LSR                                 addressing syntax        op b cyc NV*BDIZC
+Shift one bit right (memory or      acc        LSR A         4A 1 2   0-----++
+accumulator)                        zp         LSR $12       46 2 5   0-----++
+0 -> [76543210] -> C                zp,X       LSR $12,X     56 2 6   0-----++
+                                    abs        LSR $1234     4E 3 6   0-----++
+                                    abs,X      LSR $1234,X   5E 3 6a  0-----++
+------------------------------------------------------------------------------
+NOP                                 addressing syntax        op b cyc NV*BDIZC
+No operation                        imp        NOP           EA 1 2   --------
+------------------------------------------------------------------------------
+NOP                                 addressing syntax        op b cyc NV*BDIZC
+W65C02 treats invalid opcodes as    imp        -             03 1 1   --------
+NOPs. No official syntax to use.    imp        -             13 1 1   --------
+                                    imp        -             23 1 1   --------
+                                    imp        -             33 1 1   --------
+                                    imp        -             43 1 1   --------
+                                    imp        -             53 1 1   --------
+                                    imp        -             63 1 1   --------
+                                    imp        -             73 1 1   --------
+                                    imp        -             83 1 1   --------
+                                    imp        -             93 1 1   --------
+                                    imp        -             A3 1 1   --------
+                                    imp        -             B3 1 1   --------
+                                    imp        -             C3 1 1   --------
+                                    imp        -             D3 1 1   --------
+                                    imp        -             E3 1 1   --------
+                                    imp        -             F3 1 1   --------
+                                    imp        -             0B 1 1   --------
+                                    imp        -             1B 1 1   --------
+                                    imp        -             2B 1 1   --------
+                                    imp        -             3B 1 1   --------
+                                    imp        -             4B 1 1   --------
+                                    imp        -             5B 1 1   --------
+                                    imp        -             6B 1 1   --------
+                                    imp        -             7B 1 1   --------
+                                    imp        -             8B 1 1   --------
+                                    imp        -             9B 1 1   --------
+                                    imp        -             AB 1 1   --------
+                                    imp        -             BB 1 1   --------
+                                    imp        -             EB 1 1   --------
+                                    imp        -             FB 1 1   --------
+
+                                    imp        -             02 2 2   --------
+                                    imp        -             22 2 2   --------
+                                    imp        -             42 2 2   --------
+                                    imp        -             62 2 2   --------
+                                    imp        -             82 2 2   --------
+                                    imp        -             C2 2 2   --------
+                                    imp        -             E2 2 2   --------
+
+                                    imp        -             44 2 3   --------
+
+                                    imp        -             54 2 4   --------
+                                    imp        -             D4 2 4   --------
+                                    imp        -             F4 2 4   --------
+
+                                    imp        -             DC 3 4   --------
+                                    imp        -             FC 3 4   --------
+
+                                    imp        -             5C 3 8   --------
+------------------------------------------------------------------------------
+ORA                                 addressing syntax        op b cyc NV*BDIZC
+OR memory with accumulator          imm        ORA #$12      09 2 2   +-----+-
+A OR M -> A                         zp         ORA $12       05 2 3   +-----+-
+                                    zp,X       ORA $12,X     15 2 4   +-----+-
+                                    abs        ORA $1234     0D 3 4   +-----+-
+                                    abs,X      ORA $1234,X   1D 3 4a  +-----+-
+                                    abs,Y      ORA $1234,Y   19 3 4a  +-----+-
+                                    (ind zp,X) ORA ($12,X)   01 2 6   +-----+-
+                                    (ind zp),Y ORA ($12),Y   11 2 5a  +-----+-
+                                    (ind zp)   ORA ($12)     12 2 5   +-----+-
+------------------------------------------------------------------------------
+PHA                                 addressing syntax        op b cyc NV*BDIZC
+Push accumulator on stack           imp        PHA           48 1 3   --------
+A -> Ms, SP – 1 -> SP
+------------------------------------------------------------------------------
+PHP                                 addressing syntax        op b cyc NV*BDIZC
+Push processor status on stack      imp        PHP           08 1 3   --------
+SR -> Ms, SP – 1 -> SP
+------------------------------------------------------------------------------
+PHX                                 addressing syntax        op b cyc NV*BDIZC
+Push index X on stack               imp        PHX           DA 1 3   --------
+X -> Ms, SP – 1 -> SP
+------------------------------------------------------------------------------
+PHY                                 addressing syntax        op b cyc NV*BDIZC
+Push index Y on stack               imp        PHY           5A 1 3   --------
+Y -> Ms, SP – 1 -> SP
+------------------------------------------------------------------------------
+PLA                                 addressing syntax        op b cyc NV*BDIZC
+Pull accumulator from stack         imp        PLA           68 1 4   +-----+-
+SP + 1 -> SP, Ms -> A
+------------------------------------------------------------------------------
+PLP                                 addressing syntax        op b cyc NV*BDIZC
+Pull processor status from stack    imp        PLP           28 1 4   ++-1++++
+SP + 1 -> SP, Ms -> SR
+------------------------------------------------------------------------------
+PLX                                 addressing syntax        op b cyc NV*BDIZC
+Pull index X from stack             imp        PLX           FA 1 4   +-----+-
+SP + 1 -> SP, Ms -> X
+------------------------------------------------------------------------------
+PLY                                 addressing syntax        op b cyc NV*BDIZC
+Pull index Y from stack             imp        PLY           7A 1 4   +-----+-
+SP + 1 -> SP, Ms -> Y
+------------------------------------------------------------------------------
+RMB                                 addressing syntax        op b cyc NV*BDIZC
+Reset memory bit                    zp         RMB 0,$12     07 2 5   --------
+                                    zp         RMB 1,$12     17 2 5   --------
+                                    zp         RMB 2,$12     27 2 5   --------
+                                    zp         RMB 3,$12     37 2 5   --------
+                                    zp         RMB 4,$12     47 2 5   --------
+                                    zp         RMB 5,$12     57 2 5   --------
+                                    zp         RMB 6,$12     67 2 5   --------
+                                    zp         RMB 7,$12     77 2 5   --------
+------------------------------------------------------------------------------
+ROL                                 addressing syntax        op b cyc NV*BDIZC
+Rotate one bit left (memory or      acc        ROL A         2A 1 2   +-----++
+accumulator)                        zp         ROL $12       26 2 5   +-----++
+C <- [76543210] <- C                zp,X       ROL $12,X     36 2 6   +-----++
+                                    abs        ROL $1234     2E 3 6   +-----++
+                                    abs,X      ROL $1234,X   3E 3 6a  +-----++
+------------------------------------------------------------------------------
+ROR                                 addressing syntax        op b cyc NV*BDIZC
+Rotate one bit right (memory or     acc        ROR A         6A 1 2   +-----++
+accumulator)                        zp         ROR $12       66 2 5   +-----++
+C -> [76543210] -> C                zp,X       ROR $12,X     76 2 6   +-----++
+                                    abs        ROR $1234     6E 3 6   +-----++
+                                    abs,X      ROR $1234,X   7E 3 6a  +-----++
+------------------------------------------------------------------------------
+RTI                                 addressing syntax        op b cyc NV*BDIZC
+Return from interrupt               imp        RTI           40 1 6   ++-1++++
+Pull SP, pull PC
+------------------------------------------------------------------------------
+RTS                                 addressing syntax        op b cyc NV*BDIZC
+Return from subroutine              imp        RTS           60 1 6   --------
+Pull PC, PC+1 -> PC
+------------------------------------------------------------------------------
+SBC                                 addressing syntax        op b cyc NV*BDIZC
+Subtract memory from accumulator    imm        SBC #$12      E9 2 2c  ++----++
+with borrow                         zp         SBC $12       E5 2 3c  ++----++
+A - M - (~C) -> A                   zp,X       SBC $12,X     F5 2 4c  ++----++
+                                    abs        SBC $1234     ED 3 4c  ++----++
+                                    abs,X      SBC $1234,X   FD 3 4ac ++----++
+                                    abs,Y      SBC $1234,Y   F9 3 4ac ++----++
+                                    (ind zp,X) SBC ($12,X)   E1 2 6c  ++----++
+                                    (ind zp),Y SBC ($12),Y   F1 2 5ac ++----++
+                                    (ind zp)   SBC ($12)     F2 2 5c  ++----++
+------------------------------------------------------------------------------
+SEC                                 addressing syntax        op b cyc NV*BDIZC
+Set carry flag                      imp        SEC           38 1 2   -------1
+1 -> C
+------------------------------------------------------------------------------
+SED                                 addressing syntax        op b cyc NV*BDIZC
+Set decimal flag                    imp        SED           F8 1 2   ----1---
+1 -> D
+------------------------------------------------------------------------------
+SEI                                 addressing syntax        op b cyc NV*BDIZC
+Set Interrupt disable flag          imp        SEI           78 1 2   -----1--
+1 -> I
+------------------------------------------------------------------------------
+SMB                                 addressing syntax        op b cyc NV*BDIZC
+Set memory bit                      zp         SMB 0,$12     87 2 5   --------
+                                    zp         SMB 1,$12     97 2 5   --------
+                                    zp         SMB 2,$12     A7 2 5   --------
+                                    zp         SMB 3,$12     B7 2 5   --------
+                                    zp         SMB 4,$12     C7 2 5   --------
+                                    zp         SMB 5,$12     D7 2 5   --------
+                                    zp         SMB 6,$12     E7 2 5   --------
+                                    zp         SMB 7,$12     F7 2 5   --------
+------------------------------------------------------------------------------
+STA                                 addressing syntax        op b cyc NV*BDIZC
+Store accumulator in memory         zp         STA $12       85 2 3   --------
+A -> M                              zp,X       STA $12,X     95 2 4   --------
+                                    abs        STA $1234     8D 3 4   --------
+                                    abs,X      STA $1234,X   9D 3 5   --------
+                                    abs,Y      STA $1234,Y   99 3 5   --------
+                                    (ind zp,X) STA ($12,X)   81 2 6   --------
+                                    (ind zp),Y STA ($12),Y   91 2 6   --------
+                                    (ind zp)   STA ($12)     92 2 5   --------
+------------------------------------------------------------------------------
+STP                                 addressing syntax        op b cyc NV*BDIZC
+Stop the processor                  imp        STP           DB 1 3   --------
+------------------------------------------------------------------------------
+STX                                 addressing syntax        op b cyc NV*BDIZC
+Store index X in memory             zp         STX $12       86 2 3   --------
+X -> M                              zp,Y       STX $12,Y     96 2 4   --------
+                                    abs        STX $1234     8E 3 4   --------
+------------------------------------------------------------------------------
+STY                                 addressing syntax        op b cyc NV*BDIZC
+Store index Y in memory             zp         STY $12       84 2 3   --------
+Y -> M                              zp,X       STY $12,X     94 2 4   --------
+                                    abs        STY $1234     8C 3 4   --------
+------------------------------------------------------------------------------
+STZ                                 addressing syntax        op b cyc NV*BDIZC
+Store zero in memory                zp         STZ $12       64 2 3   --------
+0 -> M                              zp,X       STZ $12,X     74 2 4   --------
+                                    abs        STZ $1234     9C 3 4   --------
+                                    abs,X      STZ $1234,X   9E 3 5   --------
+------------------------------------------------------------------------------
+TAX                                 addressing syntax        op b cyc NV*BDIZC
+Transfer accumulator to index X     imp        TAX           AA 1 2   +-----+-
+A -> X
+------------------------------------------------------------------------------
+TAY                                 addressing syntax        op b cyc NV*BDIZC
+Transfer accumulator to index Y     imp        TAY           A8 1 2   +-----+-
+A -> Y
+------------------------------------------------------------------------------
+TRB                                 addressing syntax        op b cyc NV*BDIZC
+Test and reset bits                 zp         TRB $12       14 2 5   ------+-
+~A ^ M -> M                         abs        TRB $1234     1C 3 6   ------+-
+------------------------------------------------------------------------------
+TSB                                 addressing syntax        op b cyc NV*BDIZC
+Test and set bits                   zp         TSB $12       04 2 5   ------+-
+A V M ->  M                         abs        TSB $1234     0C 3 6   ------+-
+------------------------------------------------------------------------------
+TSX                                 addressing syntax        op b cyc NV*BDIZC
+Transfer stack register to index X  imp        TSX           BA 1 2   +-----+-
+SP -> X
+------------------------------------------------------------------------------
+TXA                                 addressing syntax        op b cyc NV*BDIZC
+Transfer index X to accumulator     imp        TXA           8A 1 2   +-----+-
+X -> A
+------------------------------------------------------------------------------
+TXS                                 addressing syntax        op b cyc NV*BDIZC
+Transfer index X to stack register  imp        TXS           9A 1 2   --------
+X -> SP
+------------------------------------------------------------------------------
+TYA                                 addressing syntax        op b cyc NV*BDIZC
+Transfer index Y to accumulator     imp        TYA           98 1 2   +-----+-
+Y -> A
+------------------------------------------------------------------------------
+WAI                                 addressing syntax        op b cyc NV*BDIZC
+Wait for interrupt                  imp        WAI           CB 1 2   --------
+==============================================================================
+Notes to cycles:
+    a  add 1 cycle if page is crossed
+    b  add 1 cycle if branch occurs on same page
+       add 2 to cycles if branch occurs to different page
+    c  add 1 cycle if decimal mode
+
+Legend to flags:
+    +  modified
+    -  not modified
+    1  set
+    0  cleared
+    6  memory bit 6
+    7  memory bit 7
+
+Info collected from / checked against:
+    http://www.zophar.net/fileuploads/2/10533qqcap/6502ref.html
+    http://nparker.llx.com/a2/opcodes.html
+    http://www.6502.org/tutorials/65c02opcodes.html
+    http://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf
+    http://www.obelisk.me.uk/65C02/reference.html
+    http://github.com/Klaus2m5/AVR_emulated_6502_4SBC/blob/master/Manuals/65C02_Emu_speed_calc.pdf
+
+My own tests on real HW, a Teensy 4.1 controlling a W65C02S6TPG-14, were used
+to verify the cycles for many of the opcodes. The other docs disagree on many
+of the timings.
